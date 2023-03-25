@@ -7,6 +7,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom"
+import { useField } from "./index"
 
 const AnecdoteInfo = ({ anecdotes }) => {
   const id = useParams().id
@@ -96,24 +97,30 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("")
-  const [author, setAuthor] = useState("")
-  const [info, setInfo] = useState("")
   const navigate = useNavigate()
+  const [content, resetContent] = useField("text")
+  const [author, resetAuthor] = useField("text")
+  const [info, resetInfo] = useField("text")
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     })
-    props.setNotification(`Sucessfuly added ${content}`)
+    props.setNotification(`Sucessfuly added ${content.value}`)
     setTimeout(() => {
       props.setNotification("")
     }, 5000)
     navigate("/")
+  }
+
+  const resetForm = () => {
+    resetContent()
+    resetAuthor()
+    resetInfo()
   }
 
   return (
@@ -122,29 +129,20 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={resetForm} type="button">
+          reset
+        </button>
       </form>
     </div>
   )
@@ -192,7 +190,7 @@ const App = () => {
     <Router>
       <div>
         <h1>Software anecdotes</h1>
-        <Menu notification={notification}/>
+        <Menu notification={notification} />
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path="/about" element={<About />} />
