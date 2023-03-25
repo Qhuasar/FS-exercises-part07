@@ -26,7 +26,7 @@ const AnecdoteInfo = ({ anecdotes }) => {
   )
 }
 
-const Menu = () => {
+const Menu = (props) => {
   const padding = {
     paddingRight: 5,
   }
@@ -43,6 +43,7 @@ const Menu = () => {
         {" "}
         about{" "}
       </Link>
+      <p>{props.notification}</p>
     </div>
   )
 }
@@ -108,6 +109,10 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     })
+    props.setNotification(`Sucessfuly added ${content}`)
+    setTimeout(() => {
+      props.setNotification("")
+    }, 5000)
     navigate("/")
   }
 
@@ -187,13 +192,15 @@ const App = () => {
     <Router>
       <div>
         <h1>Software anecdotes</h1>
-        <Menu />
+        <Menu notification={notification}/>
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/anecdotes/create"
-            element={<CreateNew addNew={addNew} />}
+            element={
+              <CreateNew addNew={addNew} setNotification={setNotification} />
+            }
           />
           <Route path="/:id" element={<AnecdoteInfo anecdotes={anecdotes} />} />
         </Routes>
