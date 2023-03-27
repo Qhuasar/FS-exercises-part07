@@ -1,0 +1,7 @@
+PUT http://localhost:3003/api/blogs/6420cd5e026987d5f6125e30/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0MWNiZWI5MDNiNWVmMzFlN2M3ZGNkNyIsImlhdCI6MTY3OTg3MTQ4MCwiZXhwIjoxNjc5ODc1MDgwfQ.HOWiv0pecEX2VnDKB1GJwd8xShZF-Q7PuOwFVr3UkC8
+
+{
+    "comment":"A new mighty comment"
+}
